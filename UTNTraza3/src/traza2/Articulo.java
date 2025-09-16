@@ -1,14 +1,14 @@
 package traza2;
 
-import conexion.ArticuloPorSucursal;
+import conexion.ArticuloStock;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-
 import java.util.HashSet;
 import java.util.Set;
 
 @Data
-@ToString(exclude = "imagenes")
+@ToString(exclude = {"imagenes", "stockPorSucursal"})
+@EqualsAndHashCode(exclude = "stockPorSucursal")
 @SuperBuilder(toBuilder=true)
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,6 +20,7 @@ public abstract class Articulo {
     private Categoria categoria;
     @Builder.Default
     protected Set<Imagen> imagenes = new HashSet<>();
+
     @Builder.Default
-    private Set<ArticuloPorSucursal> articulosPorSucursal = new HashSet<>();
+    protected Set<ArticuloStock> stockPorSucursal = new HashSet<>();
 }

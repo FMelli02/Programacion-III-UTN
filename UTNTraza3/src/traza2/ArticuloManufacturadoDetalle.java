@@ -12,3 +12,4 @@ public class ArticuloManufacturadoDetalle {
     private Long id;
     private ArticuloInsumo articuloInsumo;
 }
+

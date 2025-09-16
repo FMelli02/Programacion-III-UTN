@@ -1,27 +1,14 @@
 package traza1.entidades;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.experimental.SuperBuilder;
+import lombok.*;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Setter
 @Getter
-@SuperBuilder
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@ToString(exclude = "provincia")
 public class Localidad {
-    private Long id;
     private String nombre;
     private Provincia provincia;
-
-    @Override
-    public String toString() {
-        return "Localidad{" +
-                "id=" + id +
-                ", nombre='" + nombre + '\'' +
-                ", provincia=" + (provincia != null ? provincia.getNombre() : null) + // Evitar recursión infinita
-                '}';
-    }
 }

@@ -1,21 +1,16 @@
 package traza1.entidades;
 
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Setter
 @Getter
+@Setter
 @ToString(exclude = "localidad")
-@SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Domicilio {
-    private Long id;
     private String calle;
     private Integer numero;
     private Integer cp;
-    private Integer piso;
-    private Integer nroDpto;
-
     private Localidad localidad;
 }

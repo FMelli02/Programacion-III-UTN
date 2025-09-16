@@ -1,6 +1,5 @@
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,6 +13,7 @@ public abstract class Articulo {
     protected Double precioVenta;
     protected Long id;
     protected UnidadMedida unidadMedida;
+    private Categoria categoria;
     @Builder.Default
     protected Set<Imagen> imagenes = new HashSet<>();
 }

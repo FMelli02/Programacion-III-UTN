@@ -1,29 +1,19 @@
 package traza1.entidades;
 
 import lombok.*;
-import lombok.experimental.SuperBuilder;
+
 import java.util.HashSet;
 import java.util.Set;
 
+@Getter
+@Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Setter
-@Getter
-@SuperBuilder
+@ToString(exclude = "pais")
 public class Provincia {
-    private Long id;
     private String nombre;
-
     @Builder.Default
     private Set<Localidad> localidades = new HashSet<>();
     private Pais pais;
-
-    @Override
-    public String toString() {
-        return "Provincia{" +
-                "id=" + id +
-                ", nombre='" + nombre + '\'' +
-                ", pais=" + (pais != null ? pais.getNombre() : null) + // Evitar recursión infinita
-                '}';
-    }
 }

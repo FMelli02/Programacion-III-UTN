@@ -1,27 +1,27 @@
 package traza1.entidades;
 
-import conexion.ArticuloPorSucursal;
+import conexion.ArticuloStock;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Set;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Setter
 @Getter
-@ToString(exclude = "empresa")
-@SuperBuilder
+@Setter
+@ToString(exclude = {"empresa", "stockDeArticulos"})
+@EqualsAndHashCode(exclude = "stockDeArticulos")
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Sucursal {
     private Long id;
     private String nombre;
     private LocalTime horarioApertura;
     private LocalTime horarioCierre;
-    private boolean esCasaMatriz;
-    private Domicilio domicilio;
+    private boolean es_Casa_Matriz;
     private Empresa empresa;
+    private Domicilio domicilio;
 
     @Builder.Default
-    private Set<ArticuloPorSucursal> articulosPorSucursal = new HashSet<>();
+    private Set<ArticuloStock> stockDeArticulos = new HashSet<>();
 }
