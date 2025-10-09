@@ -26,12 +26,10 @@ public class HistoriaClinica {
     @Column(updatable = false)
     private LocalDateTime fechaCreacion;
 
-    // Relación OneToOne: unique=true en el JoinColumn asegura la unicidad
     @OneToOne(optional = false)
     @JoinColumn(name = "paciente_id", unique = true, nullable = false)
     private Paciente paciente;
 
-    // Colecciones de strings en tablas separadas (@ElementCollection)
     @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "hc_diagnosticos", joinColumns = @JoinColumn(name = "historia_clinica_id"))
     @Builder.Default
@@ -47,7 +45,6 @@ public class HistoriaClinica {
     @Builder.Default
     private List<String> alergias = new ArrayList<>();
 
-    // Constructor que genera el número de historia
     public HistoriaClinica(Long id, String numeroHistoria, LocalDateTime fechaCreacion, Paciente paciente, List<String> diagnosticos, List<String> tratamientos, List<String> alergias) {
         this.id = id;
         this.paciente = Objects.requireNonNull(paciente, "La Historia Clínica requiere un Paciente");

@@ -40,7 +40,6 @@ public class Sala {
         this.citas = (citas != null) ? citas : new ArrayList<>();
     }
 
-    // Método helper para bidireccionalidad con Cita
     public void addCita(Cita cita) {
         if (!this.citas.contains(cita)) {
             this.citas.add(cita);

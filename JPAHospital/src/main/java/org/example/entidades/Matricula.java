@@ -14,12 +14,11 @@ import java.util.Objects;
 @Getter
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Access(AccessType.FIELD) // Necesario para asegurar que JPA use los campos
+@Access(AccessType.FIELD)
 public class Matricula {
 
     private String numero;
 
-    // Constructor con validación: CRÍTICO
     public Matricula(String numero) {
         Objects.requireNonNull(numero, "La matrícula no puede ser nula");
         if (!numero.matches("MP-\\d{4,6}")) { // Validación: MP-XXXXX [cite: 453, 940, 1082]

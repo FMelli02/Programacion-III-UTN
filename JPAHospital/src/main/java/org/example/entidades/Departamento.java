@@ -47,12 +47,10 @@ public class Departamento {
         this.salas = (salas != null) ? salas : new ArrayList<>();
     }
 
-    // MÉTODO HELPER CRÍTICO: Valida la especialidad compatible
     public void agregarMedico(Medico medico) {
         if (!medico.getEspecialidad().equals(this.especialidad)) {
             throw new IllegalArgumentException("❌ Especialidad incompatible. El médico debe ser " + this.especialidad.name());
         }
-        // Sincronización bidireccional
         if (medico.getDepartamento() != this) {
             medico.setDepartamento(this);
         }

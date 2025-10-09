@@ -19,7 +19,6 @@ public abstract class Persona {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Atributos protegidos para herencia
     protected String nombre;
     protected String apellido;
     protected String dni;
@@ -28,7 +27,6 @@ public abstract class Persona {
     @Enumerated(EnumType.STRING)
     protected TipoSangre tipoSangre;
 
-    // Constructor protegido que llama a la validación
     protected Persona(PersonaBuilder<?, ?> builder) {
         this.nombre = validarString(builder.nombre, "Nombre");
         this.apellido = validarString(builder.apellido, "Apellido");
@@ -37,7 +35,6 @@ public abstract class Persona {
         this.tipoSangre = Objects.requireNonNull(builder.tipoSangre, "Tipo de sangre no puede ser nulo");
     }
 
-    // Método de validación de DNI: regex \d{7,8}
     private String validarDni(String dni) {
         validarString(dni, "DNI");
         if (!dni.matches("\\d{7,8}")) {
@@ -53,7 +50,6 @@ public abstract class Persona {
         return valor.trim();
     }
 
-    // Funcionalidades de negocio
     public int getEdad() {
         return Period.between(this.fechaNacimiento, LocalDate.now()).getYears();
     }

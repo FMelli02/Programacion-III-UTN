@@ -6,7 +6,6 @@ import lombok.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Getter
@@ -28,7 +27,6 @@ public class Hospital {
     @Column(nullable = false)
     private String telefono;
 
-    // Relación de Composición: Cascade ALL + Orphan Removal CRÍTICO
     @OneToMany(mappedBy = "hospital", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @Builder.Default
     private List<Departamento> departamentos = new ArrayList<>();
@@ -37,7 +35,6 @@ public class Hospital {
     @Builder.Default
     private List<Paciente> pacientes = new ArrayList<>();
 
-    // Constructor custom para validar datos y asegurar listas inicializadas
     public Hospital(Long id, String nombre, String direccion, String telefono, List<Departamento> departamentos, List<Paciente> pacientes) {
         this.id = id;
         this.nombre = validarString(nombre, "Nombre del Hospital");
@@ -47,7 +44,6 @@ public class Hospital {
         this.pacientes = (pacientes != null) ? pacientes : new ArrayList<>();
     }
 
-    // MÉTODO HELPER CRÍTICO: Mantiene la bidireccionalidad
     public void agregarDepartamento(Departamento dept) {
         if (dept.getHospital() != this) {
             dept.setHospital(this);
@@ -57,7 +53,6 @@ public class Hospital {
         }
     }
 
-    // MÉTODO HELPER CRÍTICO: Mantiene la bidireccionalidad
     public void agregarPaciente(Paciente paciente) {
         if (paciente.getHospital() != this) {
             paciente.setHospital(this);
@@ -74,7 +69,6 @@ public class Hospital {
         return valor.trim();
     }
 
-    // Getters para colecciones inmutables (Encapsulación
     public List<Departamento> getDepartamentos() {
         return Collections.unmodifiableList(departamentos);
     }

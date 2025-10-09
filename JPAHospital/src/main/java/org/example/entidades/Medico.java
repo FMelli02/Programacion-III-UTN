@@ -19,7 +19,6 @@ import java.util.Objects;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Medico extends Persona {
 
-    // Value Object embebido
     @Embedded
     @AttributeOverrides({
             @AttributeOverride(name = "numero", column = @Column(name = "matricula_numero", unique = true, nullable = false))
@@ -34,11 +33,9 @@ public class Medico extends Persona {
     @JoinColumn(name = "departamento_id")
     private Departamento departamento;
 
-    // Relación OneToMany: mapeada por Cita
     @OneToMany(mappedBy = "medico", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Cita> citas;
 
-    // CONSTRUCTOR CRÍTICO: Inicializa la colección por el bug de Lombok/SuperBuilder
     protected Medico(MedicoBuilder<?, ?> builder) {
         super(builder);
         this.matricula = Objects.requireNonNull(builder.matricula, "La matrícula es obligatoria");

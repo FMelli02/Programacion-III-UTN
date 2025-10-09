@@ -7,12 +7,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 import java.util.List;
 
-// Este sería el Service Layer [cite: 94]
 public class CitaManager {
-
-    /**
-     * Intenta programar una cita aplicando todas las reglas de negocio CRÍTICAS.
-     */
     public Cita programarCita(Paciente paciente, Medico medico, Sala sala, LocalDateTime fechaHora, BigDecimal costo) throws CitaException {
 
         Objects.requireNonNull(paciente, "Paciente no puede ser nulo");
@@ -63,9 +58,6 @@ public class CitaManager {
         return nuevaCita;
     }
 
-    /**
-     * CRÍTICO: Verifica el buffer de 2 horas para el médico.
-     */
     private boolean esMedicoDisponible(Medico medico, LocalDateTime nuevaFechaHora) {
         List<Cita> citasProgramadas = medico.getCitas().stream()
                 .filter(c -> c.getEstado() == EstadoCita.PROGRAMADA || c.getEstado() == EstadoCita.EN_CURSO)
@@ -75,7 +67,6 @@ public class CitaManager {
             LocalDateTime existenteFechaHora = citaExistente.getFechaHora();
             long horasDiferencia = Math.abs(ChronoUnit.HOURS.between(existenteFechaHora, nuevaFechaHora));
 
-            // Si la diferencia es menor a 2 horas, no está disponible
             if (horasDiferencia < 2) {
                 return false;
             }
@@ -83,11 +74,7 @@ public class CitaManager {
         return true;
     }
 
-    /**
-     * CRÍTICO: Verifica el buffer de 2 horas para la sala.
-     */
     private boolean esSalaDisponible(Sala sala, LocalDateTime nuevaFechaHora) {
-        // Asumiendo que Sala.getCitas() retorna todas las citas asociadas a esa sala
         List<Cita> citasProgramadas = sala.getCitas().stream()
                 .filter(c -> c.getEstado() == EstadoCita.PROGRAMADA || c.getEstado() == EstadoCita.EN_CURSO)
                 .toList();

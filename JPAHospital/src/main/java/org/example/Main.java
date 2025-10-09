@@ -23,7 +23,6 @@ public class Main {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("hospital-persistence-unit");
         EntityManager em = emf.createEntityManager();
 
-        // ⚠️ INICIALIZACIÓN DE SERVICIOS: UNA SOLA VEZ
         CitaManager citaManager = new CitaManager();
         ReporteService reporteService = new ReporteService(em);
 
@@ -32,12 +31,10 @@ public class Main {
         System.out.println("\n--- INICIO DE DEMOSTRACIÓN JPA HOSPITAL ---");
 
         try {
-            // =========================================================
             // TRANSACCIÓN 1: CREACIÓN Y PERSISTENCIA DE DATOS BASE
-            // =========================================================
             em.getTransaction().begin();
 
-            // 1.1 Crear Hospital (Aggregate Root)
+            // 1.1 Crear Hospital
             hospitalCentral = Hospital.builder()
                     .nombre("Hospital Central UTN")
                     .direccion("Av. Libertador 1234")
@@ -85,7 +82,7 @@ public class Main {
             cardiologia.agregarMedico(drCorazon);
             pediatria.agregarMedico(draKids);
 
-            // 1.4 Crear y asignar Pacientes (Historia Clínica Auto-generada)
+            // 1.4 Crear y asignar Pacientes
             Paciente maria = Paciente.builder()
                     .nombre("María")
                     .apellido("López")
@@ -119,12 +116,10 @@ public class Main {
             System.out.println("✅ T1: Datos iniciales (Hospital, Dep, Med, Pac) persistidos correctamente.");
 
 
-            // =========================================================
             // TRANSACCIÓN 2: PROGRAMACIÓN Y VALIDACIÓN DE CITAS
-            // =========================================================
             em.getTransaction().begin();
 
-            // Cita A: Exitosa (Dr. Corazón en 5 días)
+            // Cita A: Exitosa
             Cita citaA = null;
             try {
                 citaA = citaManager.programarCita(
@@ -138,7 +133,7 @@ public class Main {
                 System.err.println("❌ Error Cita A: " + e.getMessage());
             }
 
-            // Cita B: Intento fallido (TEST BUFFER - Menos de 2 horas)
+            // Cita B: Intento fallido
             try {
                 Cita citaB = citaManager.programarCita(
                         juan, drCorazon, salaCardio,
@@ -168,9 +163,7 @@ public class Main {
             System.out.println("✅ T2: Programación de citas finalizada (Validación de buffer demostrada).");
 
 
-            // =========================================================
             // TRANSACCIÓN 3: ACTUALIZACIÓN Y CONSULTAS (ReporteService)
-            // =========================================================
             em.getTransaction().begin();
 
             // 3.1 Actualización de estado de cita
@@ -202,9 +195,7 @@ public class Main {
             System.out.println("✅ T3: Consultas y Actualización completadas. Capa de servicio de reportes demostrada.");
 
 
-            // =========================================================
             // TRANSACCIÓN 4: EXPORTAR CITAS A CSV (HU-030)
-            // =========================================================
             String CSV_PATH = "./citas_exportadas.csv";
 
             try {
@@ -218,9 +209,7 @@ public class Main {
                 System.err.println("❌ Error de I/O al exportar CSV: " + e.getMessage());
             }
 
-            // =========================================================
             // TRANSACCIÓN 5: IMPORTAR CITAS DESDE CSV (HU-031)
-            // =========================================================
             em.getTransaction().begin();
 
             try {
@@ -229,7 +218,6 @@ public class Main {
                 CitaService csvServiceImport = new CitaService(hospitalManaged, new ArrayList<>());
                 List<Cita> citasImportadas = csvServiceImport.importarCitasDesdeCsv(CSV_PATH);
 
-                // Persistimos las citas importadas para que queden en la BD
                 citasImportadas.forEach(em::persist);
 
                 System.out.println("✅ T5: Importación desde CSV exitosa. Total de citas importadas: " + citasImportadas.size());
@@ -242,9 +230,7 @@ public class Main {
             System.out.println("✅ T5: Persistencia de datos importados completada.");
 
 
-            // =========================================================
             // 6. CIERRE Y MENSAJE FINAL
-            // =========================================================
             System.out.println("\n" + "=".repeat(40));
             System.out.println("SISTEMA EJECUTADO EXITOSAMENTE");
             System.out.println("=".repeat(40));

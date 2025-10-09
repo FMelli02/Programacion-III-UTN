@@ -31,7 +31,6 @@ public class Cita {
     @Column(length = 1000)
     private String observaciones;
 
-    // Relaciones ManyToOne CRÍTICAS con Cascade PERSIST y MERGE
     @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "paciente_id", nullable = false)
     private Paciente paciente;
@@ -47,7 +46,6 @@ public class Cita {
     public Cita(Long id, LocalDateTime fechaHora, BigDecimal costo, EstadoCita estado, String observaciones, Paciente paciente, Medico medico, Sala sala) {
         this.id = id;
         this.fechaHora = Objects.requireNonNull(fechaHora, "La fecha y hora de la cita es obligatoria");
-        // La validación de costo > 0 y fecha futura se hace en CitaManager
         this.costo = Objects.requireNonNull(costo, "El costo de la cita es obligatorio");
         this.estado = Objects.requireNonNullElse(estado, EstadoCita.PROGRAMADA);
         this.observaciones = observaciones;
@@ -65,7 +63,7 @@ public class Cita {
                 medico.getDni(),
                 sala.getNumero(),
                 fechaHora.toString(),
-                costo.toPlainString(), // Usar toPlainString para precisión
+                costo.toPlainString(),
                 estado.name(),
                 obsLimpia
         );

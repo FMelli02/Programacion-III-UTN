@@ -8,11 +8,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.math.BigDecimal;
 
-/**
- * Servicio encargado de ejecutar consultas de reportes y estadísticas.
- */
 public class ReporteService {
 
     private final EntityManager em;
@@ -90,9 +86,8 @@ public class ReporteService {
         return query.getResultList();
     }
 
-    // Nota: Las HU-030/031 (Exportar/Importar CSV) requieren lógica de archivos/serialización que no es JPA y no incluiremos aquí, pero están identificadas.
+    // Nota: Las HU-030/031 (Exportar/Importar CSV)
     public List<Cita> getCitasPorHospital(Hospital hospital) {
-        // La forma más fácil es hacer un FlatMap sobre todas las salas de todos los departamentos
         return hospital.getDepartamentos().stream()
                 .flatMap(d -> d.getSalas().stream())
                 .flatMap(s -> s.getCitas().stream())
