@@ -1,0 +1,57 @@
+plugins {
+    id 'java'
+    id 'application'
+    // ⚠️ CRÍTICO: Este plugin le dice a Gradle que detecte tus @Entity y las mapee correctamente.
+    id 'org.hibernate.orm' version '6.5.2.Final'
+}
+
+group = 'org.example'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+// Configuración de Lombok
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+dependencies {
+    // Las dependencias siguen igual
+    implementation 'jakarta.persistence:jakarta.persistence-api:3.1.0'
+    implementation 'org.hibernate:hibernate-core:6.5.2.Final'
+
+    runtimeOnly 'com.h2database:h2:2.2.224'
+
+    compileOnly 'org.projectlombok:lombok:1.18.32'
+    annotationProcessor 'org.projectlombok:lombok:1.18.32'
+
+    implementation 'org.slf4j:slf4j-simple:2.0.9'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.0'
+}
+
+// Configuración del plugin de Hibernate para que encuentre las clases
+hibernate {
+    enhancement {
+        enableAssociationManagement = true
+    }
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+application {
+    mainClass = 'org.example.Main'
+}
